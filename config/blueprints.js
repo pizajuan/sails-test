@@ -56,9 +56,9 @@ module.exports.blueprints = {
       }
     }
 
-    if(!req.param('populate', false) && !queryOptions.alias) {// disable automatic populate
-      queryOptions.populates = {};
-    }
+    // if(!req.param('populate', false) && !queryOptions.alias) {// enable or disable automatic populate
+    //   queryOptions.populates = {};
+    // }
 
     // sails.log(queryOptions);
     // queryOptions['meta'] = { enableExperimentalDeepTargets:true };

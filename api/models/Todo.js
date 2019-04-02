@@ -1,5 +1,5 @@
 /**
- * Todos.js
+ * Todo.js
  *
  * @description :: A model definition.  Represents a database table/collection/etc.
  * @docs        :: https://sailsjs.com/docs/concepts/models-and-orm/models
@@ -16,6 +16,8 @@ module.exports = {
     name: {
       type: 'string',
       required: true,
+      isNotEmptyString: true,
+      minLength: 4
       //example of custom validation
       // custom: function(value) {
       //   // • be a string
@@ -50,7 +52,7 @@ module.exports = {
 
   beforeCreate: function (valuesToSet, proceed) {
     sails.log('before create');
-    sails.log(valuesToSet)
+    sails.log(valuesToSet.tasks)
     return proceed();
   },
 

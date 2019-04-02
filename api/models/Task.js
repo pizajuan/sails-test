@@ -28,7 +28,7 @@ module.exports = {
     //  ╩ ╩╚═╝╚═╝╚═╝╚═╝╩╩ ╩ ╩ ╩╚═╝╝╚╝╚═╝
 
     todo: {
-      model: 'todos'
+      model: 'todo'
     }
 
   },
