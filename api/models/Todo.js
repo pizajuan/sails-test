@@ -43,6 +43,11 @@ module.exports = {
     //  ╠═╣╚═╗╚═╗║ ║║  ║╠═╣ ║ ║║ ║║║║╚═╗
     //  ╩ ╩╚═╝╚═╝╚═╝╚═╝╩╩ ╩ ╩ ╩╚═╝╝╚╝╚═╝
 
+    objective: {
+      model: 'objective',
+      required: true
+    },
+
     tasks: {
       collection: 'task',
       via: 'todo'

@@ -56,34 +56,54 @@ module.exports = {
     return output;
   },
 
+  // delete
+
   create: async function(req, res) {
 
     // todo esto lo hacemos para aceptar las creaciones con relaciones anidadas en primera estancia
     // luego de debe realizar alguna solucion general que permita realizarlo en todas las entidades
-    //ademas debe hacerse transaccional
 
     // Assuming the POST contains all the data we need to create a user...
     sails.log(req.options.model)
     let mainModel = sails.models[req.options.model];
 
     var fields = module.exports.getRelationFields(req.options.model);
-    sails.log('fields', fields);
+    // sails.log('fields', fields);
     var todoData = req.allParams();
-    // Extract the pet from the POSTed data
-    var tasksData = todoData.tasks;
+    // // Extract the pet from the POSTed data
+    // sails.log('objective', typeof todoData[fields[0]])
+    // sails.log('tasks', typeof todoData[fields[1]])
+    // sails.log('objective type:', todoData[fields[0]] instanceof Object)// asi sabemos q es belongs to
+    // sails.log('tasks type:', todoData[fields[1]] instanceof Array) // asi sabemos que es one-to-many o many-to-many
+
+    // sails.log(fields[0])
+    // sails.log(fields[1])
+    // sails.log(todoData[fields[0]])
+    // sails.log(todoData[fields[1]])
+    var tasksData = todoData.tasks
+    var objectiveData = todoData.objective
     // tasksData = tasksData[0];
-    sails.log(tasksData);
+    // sails.log(tasksData);
     // Delete the pet from the POSTed data, if you
     // don't want it saved to the User collection in Mongo
     // sails.log(tasksData);
-    delete todoData.tasks;
+    delete todoData.tasks
+    delete todoData.objective
 
-    sails.log(mainModel.attributes)// tengo todos los atributos del modelo
-    sails.log('validacion: ',mainModel.validate('name','a')) // con esto valido cada uno
+    // sails.log(mainModel.attributes)// tengo todos los atributos del modelo
+    // sails.log('validacion: ',mainModel.validate('name','a')) // con esto valido cada uno
 
-    if (!mainModel.validate('name','a')) {
-      return res.badRequest();
-    }
+    // if (!mainModel.validate('name','a')) {
+    //   return res.badRequest();
+    // }
+
+    // sails.log(objectiveData)
+
+    var newObjective = await Objective.create(objectiveData).fetch();
+
+    sails.log(newObjective);
+
+    todoData.objective = newObjective.id
 
     var newTodo = await mainModel.create(todoData).fetch();
 
@@ -106,7 +126,8 @@ module.exports = {
   },
 
   // create: async function(req, res) {
-  //   var ModelCreated = await module.exports.createNested('todos',
+  //   var Nested = require('waterline-nested');
+  //   Nested.createNested('todo',
   //   {
   //     name: "todo nested2trans",
   //     description: "desc nested2trans",
@@ -115,9 +136,10 @@ module.exports = {
   //         description: "subir nested2trans"
   //       }
   //     ]
-  //   });
+  //   }).exec(function(err) {});
 
-  //   res.json(ModelCreated);
+  //   // sails.log(ModelCreated);
+
   // },
 
   // createEachNested: function(model, records) {
