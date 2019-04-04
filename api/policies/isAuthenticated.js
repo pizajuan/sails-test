@@ -3,7 +3,6 @@ var jwtSecret = sails.config.secrets.jwtSecret;
 
 module.exports = function(req, res, next) {
 
-  sails.log('checking')
 	var token;
 	//Check if authorization header is present
 	if(req.headers && req.headers.authorization) {

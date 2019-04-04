@@ -17,11 +17,12 @@ module.exports.policies = {
   *                                                                          *
   ***************************************************************************/
 
-  '*': true,
-  // 'signup': true,
-  // 'login': true,
-  // 'todos/*': 'isAuthenticated',
-  // 'task/*': 'isAuthenticated',
-  // 'user/*': 'isAuthenticated',
+  // '*': true,
+  'user/create': true,
+  'user/login': true,
+  'todo/*': 'isAuthenticated',
+  'task/*': 'isAuthenticated',
+  'user/find': 'isAuthenticated',
+
 
 };

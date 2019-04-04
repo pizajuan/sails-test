@@ -24,8 +24,7 @@
     "sails-hook-orm": "^2.1.1",
     "sails-hook-sockets": "^1.5.5",
     "sails-mongo": "^1.0.1",
-    "sails-nested-blueprint": "^1.7.0",
-    "waterline-nested": "^0.1.1"
+    "sails-pagination-middleware": "0.0.2"
   },
   "devDependencies": {
     "@sailshq/eslint": "^4.19.3"

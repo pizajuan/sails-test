@@ -41,6 +41,8 @@ module.exports.blueprints = {
 
   autoWatch: true,
 
+  pluralize: true,
+
   parseBlueprintOptions: function(req) {
 
     // Get the default query options.
@@ -54,12 +56,15 @@ module.exports.blueprints = {
       if (queryOptions.criteria.limit > 100) {
         queryOptions.criteria.limit = 100;
       }
+
+      if(!req.param('deletedAt', false) && !queryOptions.alias) {// enable or disable deletedAt
+        queryOptions.criteria.where.deletedAt = null
+      }
+
+      if(!req.param('populate', false) && !queryOptions.alias) {// enable or disable automatic populate
+        queryOptions.populates = {};
+      }
     }
-
-    // if(!req.param('populate', false) && !queryOptions.alias) {// enable or disable automatic populate
-    //   queryOptions.populates = {};
-    // }
-
 
     // sails.log(queryOptions);
     // queryOptions['meta'] = { enableExperimentalDeepTargets:true };

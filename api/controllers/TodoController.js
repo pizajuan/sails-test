@@ -56,40 +56,18 @@ module.exports = {
     return output;
   },
 
-  // delete
-
   create: async function(req, res) {
 
-    // todo esto lo hacemos para aceptar las creaciones con relaciones anidadas en primera estancia
-    // luego de debe realizar alguna solucion general que permita realizarlo en todas las entidades
-
-    // Assuming the POST contains all the data we need to create a user...
-    sails.log(req.options.model)
+    // todo esto lo hacemos para aceptar las creaciones con relaciones anidadas se realiza para cada modelo que lo solicite
     let mainModel = sails.models[req.options.model];
-
-    var fields = module.exports.getRelationFields(req.options.model);
-    // sails.log('fields', fields);
     var todoData = req.allParams();
-    // // Extract the pet from the POSTed data
-    // sails.log('objective', typeof todoData[fields[0]])
-    // sails.log('tasks', typeof todoData[fields[1]])
-    // sails.log('objective type:', todoData[fields[0]] instanceof Object)// asi sabemos q es belongs to
-    // sails.log('tasks type:', todoData[fields[1]] instanceof Array) // asi sabemos que es one-to-many o many-to-many
-
-    // sails.log(fields[0])
-    // sails.log(fields[1])
-    // sails.log(todoData[fields[0]])
-    // sails.log(todoData[fields[1]])
     var tasksData = todoData.tasks
     var objectiveData = todoData.objective
-    // tasksData = tasksData[0];
-    // sails.log(tasksData);
-    // Delete the pet from the POSTed data, if you
-    // don't want it saved to the User collection in Mongo
-    // sails.log(tasksData);
     delete todoData.tasks
     delete todoData.objective
 
+
+    //aqui faltaria validar que los modelos esten bien formados antes de guardarlos
     // sails.log(mainModel.attributes)// tengo todos los atributos del modelo
     // sails.log('validacion: ',mainModel.validate('name','a')) // con esto valido cada uno
 
@@ -101,130 +79,22 @@ module.exports = {
 
     var newObjective = await Objective.create(objectiveData).fetch();
 
-    sails.log(newObjective);
-
     todoData.objective = newObjective.id
 
     var newTodo = await mainModel.create(todoData).fetch();
-
-    sails.log(newTodo);
 
     for (let task of tasksData) {
       task.todo = newTodo.id;
     }
 
-    sails.log(tasksData);
-
     var newTasks = await Task.createEach(tasksData).fetch();
 
-    sails.log(newTasks);
-
     newTodo.tasks = newTasks;
+
+    res.status(201);
 
     return res.json(newTodo);
 
   },
-
-  // create: async function(req, res) {
-  //   var Nested = require('waterline-nested');
-  //   Nested.createNested('todo',
-  //   {
-  //     name: "todo nested2trans",
-  //     description: "desc nested2trans",
-  //     tasks:[
-  //       {
-  //         description: "subir nested2trans"
-  //       }
-  //     ]
-  //   }).exec(function(err) {});
-
-  //   // sails.log(ModelCreated);
-
-  // },
-
-  // createEachNested: function(model, records) {
-  //   if (records && records.length > 0) {
-  //     return module.exports.createNested(model, records.shift()).then(function(object) {
-  //       return module.exports.createEachNested(model, records).then(function(objects) {
-  //         objects.push(object);
-
-  //         return Promise.resolve(objects);
-  //       });
-  //     });
-  //   }
-
-  //   return Promise.resolve([]);
-  // },
-
-  // getRelationFields: function(model) {
-  //   var Model = sails.models[model];
-
-  //   var output = [];
-
-  //   _.each(Model.attributes, function(schema, field) {
-  //     if (schema.hasOwnProperty('model') || schema.hasOwnProperty('collection')) {
-  //       output.push(field);
-  //     }
-  //   });
-
-  //   return output;
-  // },
-
-  // createNested: function(model, values) {
-  //   // sails.log(model);
-  //   var mainModel = sails.models[model];
-
-  //   var fields = module.exports.getRelationFields(model);
-
-  //   for (var i in fields) {
-  //     var field = fields[i];
-
-  //     if (typeof values[field] === 'object') {
-  //       // If the value is an object or array - we need to create it first.
-
-  //       var relatedSchema = mainModel.attributes[field];
-
-  //       // faltaria el caso para el one-to-many
-
-  //       if (values[field] instanceof Array) {
-  //         // Many-to-Many associations.
-
-  //         return module.exports.createEachNested(relatedSchema.collection, values[field]).then(function(relatedObjects) {
-  //           delete values[field];
-
-  //           return module.exports.createNested(model, values).then(function(object) {
-  //             // Create relation between objects and new object
-  //             var relatediModel = sails.models[relatedSchema.through];
-
-  //             var outputPromises = relatedObjects.map(function(relatedObject) {
-  //               var data = {};
-
-  //               data[relatedSchema.collection] = relatedObject.id;
-  //               data[relatedSchema.via] = object.id;
-
-  //               return relatediModel.create(data);
-  //             });
-
-  //             return Promise.all(outputPromises).then(function() {
-  //               return object;
-  //             });
-  //           });
-  //         });
-  //       }
-  //       else {
-  //         // One Way associations.
-
-  //         return module.exports.createNested(relatedSchema.model, values[field]).then(function(object) {
-  //           values[field] = object.id;
-
-  //           return module.exports.createNested(model, values);
-  //         });
-  //       }
-  //     }
-  //   }
-
-  //   return mainModel.findOrCreate(_.clone(values), _.clone(values));
-  // }
-
 
 }

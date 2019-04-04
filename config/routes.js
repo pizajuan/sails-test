@@ -48,7 +48,7 @@ module.exports.routes = {
   'GET /customUrl': 'TestController.customUrl',
   'POST /signup': 'UserController.create',
   'POST /login': 'UserController.login',
-  'GET /todos/filter': 'TodosController.filter'
+  'GET /todos/filter': 'TodoController.filter'
 
   //  ╦ ╦╔═╗╔╗ ╦ ╦╔═╗╔═╗╦╔═╔═╗
   //  ║║║║╣ ╠╩╗╠═╣║ ║║ ║╠╩╗╚═╗

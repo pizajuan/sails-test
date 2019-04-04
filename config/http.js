@@ -29,16 +29,18 @@ module.exports.http = {
     *                                                                          *
     ***************************************************************************/
 
-    // order: [
-    //   'cookieParser',
-    //   'session',
-    //   'bodyParser',
-    //   'compress',
-    //   'poweredBy',
-    //   'router',
-    //   'www',
-    //   'favicon',
-    // ],
+    order: [
+      'bodyParser',
+      'paginate',
+      // 'cookieParser',
+      // 'session',
+      // 'bodyParser',
+      // 'compress',
+      // 'poweredBy',
+      // 'router',
+      // 'www',
+      // 'favicon',
+    ],
 
 
     /***************************************************************************
@@ -49,11 +51,13 @@ module.exports.http = {
     *                                                                          *
     ***************************************************************************/
 
-    // bodyParser: (function _configureBodyParser(){
-    //   var skipper = require('skipper');
-    //   var middlewareFn = skipper({ strict: true });
-    //   return middlewareFn;
-    // })(),
+    bodyParser: (function _configureBodyParser(){
+      var skipper = require('skipper');
+      var middlewareFn = skipper({ strict: true });
+      return middlewareFn;
+    })(),
+
+    paginate: require('sails-pagination-middleware'),
 
   },
 
