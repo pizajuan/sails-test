@@ -97,4 +97,18 @@ module.exports = {
 
   },
 
+  destroy: async function(req, res) {
+    let mainModel = sails.models[req.options.model]
+
+    // const toDeleteRecord = await mainModel.findOne(req.params).populate('tasks').populate('objective')
+
+    // se debe crear en particular por cada entidad el soft delete para las relaciones que tenga
+
+    const deletedRecord = await mainModel.updateOne(req.params).set({'deletedAt': new Date()})
+
+    res.status(200)
+
+    return res.json(deletedRecord)
+  }
+
 }

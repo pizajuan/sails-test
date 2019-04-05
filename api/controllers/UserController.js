@@ -8,6 +8,7 @@ var _ = require('lodash');
 var jwt = require('jsonwebtoken');
 var jwtSecret = sails.config.secrets.jwtSecret;
 var bcrypt = require('bcrypt');
+var nodemailer = require('nodemailer');
 
 module.exports = {
 
@@ -35,6 +36,29 @@ module.exports = {
 
     res.status(201)
 
+    var transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+              user: 'piza.juan1@gmail.com',
+              pass: '1505zhjd2019*'
+            }
+    })
+
+    const mailData = {
+      from: 'piza.juan1@gmail.com', // sender address
+      to: 'piza.juan1@gmail.com', // list of receivers
+      subject: 'Subject of your email', // Subject line
+      html: '<p>Hola</p>'// plain text body
+    }
+
+    transporter.sendMail(mailData, function (err, info) {
+      if(err)
+        sails.log(err)
+      else
+        sails.log(info);
+    })
+
+
     return res.json(responseData)
   },
 
@@ -48,7 +72,7 @@ module.exports = {
             delete user.password
             return res.ok({
                   user:user,
-                  token: jwt.sign(user, jwtSecret, {expiresIn: 10000})//generate the token and send it in the response
+                  token: jwt.sign(user, jwtSecret, {expiresIn: 10000000})//generate the token and send it in the response
               });
           } else {
             //password is not a match

@@ -23,6 +23,8 @@ module.exports.policies = {
   'todo/*': 'isAuthenticated',
   'task/*': 'isAuthenticated',
   'user/find': 'isAuthenticated',
+  'user/update': 'isAuthenticated',
+  'user/destroy': 'isAuthenticated',
 
 
 };
